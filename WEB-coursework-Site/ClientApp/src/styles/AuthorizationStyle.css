@@ -1,0 +1,39 @@
+.authButtonContainer {
+  display: flex;
+  justify-content: center;
+}
+
+.authForm {
+  padding-top: 25%;
+  display: inline-block;
+  width: 35vh;
+}
+
+.authInput {
+  border: 2px solid #E2E2E2;
+  background-color: #E2E2E2;
+  text-align: center;
+  border-radius: 4px;
+  width: 100%;
+  padding: 1.5%;
+  display: inline-block;
+  margin-top: 1%;
+  margin-bottom: 1%;
+}
+
+.authFormContainer {
+  display: flex;
+  height: 100vh;
+  justify-content: center;
+}
+
+.authButton {
+  margin: 2%;
+  width: 50%;
+  border: 2px solid #2C96FF;
+  background-color: #2C96FF;
+  border-radius: 4px;
+  color: #E2E2E2;
+  font-weight: bold;
+  padding: 1%;
+}

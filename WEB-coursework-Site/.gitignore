@@ -229,3 +229,8 @@ _Pvt_Extensions
 
 # FAKE - F# Make
 .fake/
+
+# Ignore of "npm install tslib" packages
+package.json
+package-lock.json
+/ClientApp/.angular/cache/14.0.3

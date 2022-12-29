@@ -14,7 +14,7 @@ CREATE TABLE web_secret_questions (
 	Question varchar(255),
 );
 
---комманды для теста
+--команды для теста
 INSERT INTO web_secret_questions (Id, Question)
 VALUES (NEWID(), 'Favourite color');
 

@@ -10,7 +10,7 @@
 
         public string Password { get; set; }
 
-        public string SecretQuestionId { get; set; }
+        public string SecretQuestion { get; set; }
 
         public string SecretQuestionAnswear { get; set; }
 

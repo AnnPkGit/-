@@ -1,54 +1,36 @@
-/* You can add global styles to this file, and also import other style files */
-
-/* Provide sufficient contrast against white background */
-/*a {
-  color: #0366d6;
-}
-
-code {
-  color: #e01a76;
-}
-
-.btn-primary {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
-}*/
-
-@import "styles/AuthorizationStyle.css";
-
-@import "styles/RegistrationStyle.css";
-
-* {
-  font-family: 'Yu Gothic UI';
-}
 .registerButtonContainer {
   display: flex;
   justify-content: center;
 }
 
 .registerForm {
-  padding-top: 25%;
+  margin-top: 10%;
   display: inline-block;
-  width: 35vh;
+  width: 30%;
+  border: 2px solid black;
+  border-radius: 12px;
+  background-color: gray;
+  color: white;
 }
 
 .registerInput {
   border: 2px solid #E2E2E2;
   background-color: #E2E2E2;
+  color: black;
   text-align: center;
   border-radius: 4px;
-  width: 100%;
-  padding: 1.5%;
-  display: inline-block;
+  width: 85%;
+  padding: 2%;
+  margin-left: 5%;
+  display: flex;
   margin-top: 1%;
   margin-bottom: 1%;
 }
 
 .registerFormContainer {
   display: flex;
-  height: 100vh;
   justify-content: center;
+  text-align: center;
 }
 
 .registerButton {

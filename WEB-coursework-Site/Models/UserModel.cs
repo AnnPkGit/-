@@ -12,6 +12,8 @@
 
         public string SecretQuestion { get; set; }
 
+        public string SecretQuestionAnswear { get; set; }
+
         public IFormFile Avatar { get; set; }
     }
 }

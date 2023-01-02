@@ -5,6 +5,6 @@ namespace WEB_coursework_Site.DB.Context
 {
     public interface ISiteDbContextHelper
     {
-        Result<string> AddUser(UserModel userModel);
+        Task<Result<string>> AddUserAsync(UserModel userModel);
     }
 }

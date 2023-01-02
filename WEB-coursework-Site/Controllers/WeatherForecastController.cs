@@ -13,12 +13,10 @@ namespace WEB_coursework_Site.Controllers
     };
 
         private readonly ILogger<WeatherForecastController> _logger;
-        private readonly SiteDbcontext _siteDbContext;
 
         public WeatherForecastController(ILogger<WeatherForecastController> logger, SiteDbcontext siteDbContext)
         {
             _logger = logger;
-            _siteDbContext = siteDbContext;
         }
 
         [HttpGet]

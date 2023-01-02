@@ -12,7 +12,7 @@ namespace WEB_coursework_Site.DB.Context
             _siteDbcontext = siteDbcontext ?? throw new NullReferenceException("SiteDbcontext is null at SiteDbContextHelper.cs");
         }
 
-        public Result<string> AddUser(UserModel userModel)
+        public async Task<Result<string>> AddUserAsync(UserModel userModel)
         {
             var newUser = new User() 
             { 
@@ -28,8 +28,8 @@ namespace WEB_coursework_Site.DB.Context
 
             try
             {
-                _siteDbcontext.Users.Add(newUser);
-                _siteDbcontext.SaveChanges();
+                await _siteDbcontext.Users.AddAsync(newUser);
+                await _siteDbcontext.SaveChangesAsync();
             }
             catch(Exception ex)
             {

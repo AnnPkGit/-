@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using WEB_coursework_Site;
 using WEB_coursework_Site.DB.Context;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,6 +10,7 @@ builder.Services.AddControllersWithViews();
 
 string? connection = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<SiteDbcontext>(options => options.UseSqlServer(connection));
+ServicesConfigurator.ConfigureLocalServices(builder.Services);
 
 var app = builder.Build();
 

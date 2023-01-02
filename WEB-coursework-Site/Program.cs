@@ -1,8 +1,16 @@
+using Microsoft.EntityFrameworkCore;
+using WEB_coursework_Site;
+using WEB_coursework_Site.DB.Context;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllersWithViews();
+
+string? connection = builder.Configuration.GetConnectionString("DefaultConnection");
+builder.Services.AddDbContext<SiteDbcontext>(options => options.UseSqlServer(connection));
+ServicesConfigurator.ConfigureLocalServices(builder.Services);
 
 var app = builder.Build();
 
@@ -10,6 +18,7 @@ var app = builder.Build();
 if (!app.Environment.IsDevelopment())
 {
 }
+
 
 app.UseStaticFiles();
 app.UseRouting();

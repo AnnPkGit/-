@@ -1,4 +1,4 @@
-CREATE TABLE web_users (
+CREATE TABLE Users (
     Id uniqueidentifier,
     RealName varchar(255),
     Email varchar(255),
@@ -9,18 +9,18 @@ CREATE TABLE web_users (
 	Avatar varchar(255),
 );
 
-CREATE TABLE web_secret_questions (
+CREATE TABLE SecretQuestions (
     Id uniqueidentifier,
 	Question varchar(255),
 );
 
 --команды для теста
-INSERT INTO web_secret_questions (Id, Question)
+INSERT INTO SecretQuestions (Id, Question)
 VALUES (NEWID(), 'Favourite color');
 
 --обязательно заменить поле с ! перед выполнением запроса
-INSERT INTO web_users (Id, RealName, Email, [Login], [Password], SecretQuestionId, SecretQuestionAnswear, Avatar)
+INSERT INTO Users (Id, RealName, Email, [Login], [Password], SecretQuestionId, SecretQuestionAnswear, Avatar)
 VALUES (NEWID(), 'Ann', 'email@em.com', 'An', '123', '!тут должен быть айдишник из таблицы web_secret_questions', 'red', NULL); 
 
-SELECT web_users.RealName, web_secret_questions.Question, web_users.SecretQuestionAnswear
-FROM web_users JOIN web_secret_questions ON  web_users.SecretQuestionId =  web_secret_questions.Id;
+SELECT Users.RealName, SecretQuestions.Question, Users.SecretQuestionAnswear
+FROM Users JOIN SecretQuestions ON  Users.SecretQuestionId =  SecretQuestions.Id;

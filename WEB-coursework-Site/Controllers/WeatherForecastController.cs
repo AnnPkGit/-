@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using WEB_coursework_Site.DB.Context;
 
 namespace WEB_coursework_Site.Controllers
 {
@@ -14,7 +13,7 @@ namespace WEB_coursework_Site.Controllers
 
         private readonly ILogger<WeatherForecastController> _logger;
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger, SiteDbcontext siteDbContext)
+        public WeatherForecastController(ILogger<WeatherForecastController> logger)
         {
             _logger = logger;
         }

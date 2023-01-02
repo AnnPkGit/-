@@ -14,17 +14,7 @@ export class HomeComponent {
     
   }
 
-  public registration() {
-    window.alert("тут должно быть обращение Registration");
-    
-  }
-
   public redirectToRegistration() {
     window.alert("тут должен быть редщирект к регистрации");
-  }
-
-  public redirectToAuthorize() {
-    window.alert("тут должен быть редщирект к авторизации");
-    window.open("./Registration.html");
   }
 }

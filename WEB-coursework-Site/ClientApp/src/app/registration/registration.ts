@@ -6,11 +6,11 @@ import { Component } from '@angular/core';
 })
 
 export class Registration {
-  public login: string = "";
+  public login = "";
   public password = "";
   public passwordRecall = "";
-  public secretQuestion: string = "";
-  public realName: string = "";
+  public secretQuestion = "";
+  public realName  = "";
   public email = "";
   public avatar = "";
 
@@ -23,7 +23,3 @@ export class Registration {
     window.alert("тут должен быть редщирект к авторизации");
   }
 }
-
-
-
-

@@ -7,10 +7,10 @@
   margin-top: 10%;
   display: inline-block;
   width: 30%;
-  border: 2px solid black;
+  border: 2px solid #DADADA;
   border-radius: 12px;
-  background-color: gray;
-  color: white;
+  background-color: #D6D6D6;
+  color: #484848;
 }
 
 .registerInput {

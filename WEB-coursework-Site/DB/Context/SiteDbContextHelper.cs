@@ -25,7 +25,16 @@ namespace WEB_coursework_Site.DB.Context
                 return ResultCreator<string>.CreateFailedResult($"Failed to add user. Reason: {creationResult.Message}");
             }
 
-            var result =  AddUserAndSaveChangesAsync(creationResult.Value);
+            var secretQuestion = _siteDbcontext.SecretQuestions.Where(q => q.Question.Equals(userModel.SecretQuestion)).FirstOrDefault();
+            if(secretQuestion == null)
+            {
+                return ResultCreator<string>.CreateFailedResult($"Failed to add user. Reason: no such secret question exists");
+            }
+
+            var userToAdd = creationResult.Value;
+            userToAdd.SecretQuestionId = secretQuestion.Id.ToString();
+
+            var result =  AddUserAndSaveChangesAsync(userToAdd);
             return await result;
         }
 

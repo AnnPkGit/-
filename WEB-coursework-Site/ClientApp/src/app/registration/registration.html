@@ -11,8 +11,10 @@
     <label>Почта</label>
     <input class="registerInput" type="email" [(ngModel)]="email" [ngModelOptions]="{standalone: true}" />
     <label>Секретный вопрос</label>
-    <input class="questionRadio" type="radio" [(ngModel)]="secretQuestionRadio" [ngModelOptions]="{standalone: true}" >
-    <input class="registerInput" type="text" [(ngModel)]="secretQuestion" [ngModelOptions]="{standalone: true}" />
+    <select class="registerSelect">
+      <option>Позже будут опции</option>
+    </select>
+    <input class="registerInput" type="text" [(ngModel)]="secretQuestionAnswear" [ngModelOptions]="{standalone: true}" />
     <label>Ваше фото</label>
     <input class="registerInput" type="file" [(ngModel)]="avatar" [ngModelOptions]="{standalone: true}" />
     <div class="registerButtonContainer">

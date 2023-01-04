@@ -4,9 +4,9 @@
 }
 
 .registerForm {
-  margin-top: 10%;
+  margin-top: 15%;
   display: inline-block;
-  width: 30%;
+  width: 400px;
   border: 2px solid #DADADA;
   border-radius: 12px;
   background-color: #D6D6D6;
@@ -21,10 +21,11 @@
   border-radius: 4px;
   width: 85%;
   padding: 2%;
-  margin-left: 5%;
-  display: flex;
+  display: inline-block;
   margin-top: 1%;
   margin-bottom: 1%;
+  margin-left: 2%;
+  margin-right: 2%;
 }
 
 .registerFormContainer {
@@ -42,4 +43,19 @@
   color: #E2E2E2;
   font-weight: bold;
   padding: 1%;
+}
+
+.registerSelect {
+  border: 2px solid #b0cfee;
+  background-color: #b0cfee;
+  color: black;
+  text-align: center;
+  border-radius: 4px;
+  width: 85%;
+  padding: 1%;
+  display: inline-block;
+  margin-top: 1%;
+  margin-bottom: 1%;
+  margin-left: 2%;
+  margin-right: 2%;
 }

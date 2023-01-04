@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'app-home',
+  selector: 'app-registration',
   templateUrl: './registration.html',
 })
 
@@ -9,8 +9,8 @@ export class Registration {
   public login = "";
   public password = "";
   public passwordRecall = "";
+  public secretQuestionAnswear = "";
   public secretQuestion = "";
-  public secretQuestionRadio = false;
   public realName  = "";
   public email = "";
   public avatar = "";

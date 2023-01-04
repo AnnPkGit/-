@@ -10,6 +10,7 @@ export class Registration {
   public password = "";
   public passwordRecall = "";
   public secretQuestion = "";
+  public secretQuestionRadio = false;
   public realName  = "";
   public email = "";
   public avatar = "";

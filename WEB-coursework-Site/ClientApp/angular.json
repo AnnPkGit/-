@@ -129,5 +129,8 @@
       }
     }
   },
-  "defaultProject": "WEB_coursework_Site"
+  "defaultProject": "WEB_coursework_Site",
+  "cli": {
+    "analytics": false
+  }
 }

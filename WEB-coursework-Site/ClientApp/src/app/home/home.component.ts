@@ -10,7 +10,8 @@ export class HomeComponent {
   public password = "";
 
   public authorize() {
-    window.alert("тут должно быть обращение к User контроллеру");
+    window.alert("тут должно быть обращение к User контроллеру"); 
+    
   }
 
   public redirectToRegistration() {

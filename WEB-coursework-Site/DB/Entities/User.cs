@@ -12,10 +12,12 @@
 
         public string Password { get; set; }
 
-        public string SecretQuestionId { get; set; }
+        public Guid SecretQuestionId { get; set; }
 
         public string SecretQuestionAnswear { get; set; }
 
-        public string Avatar { get; set; }
+        public string? Avatar { get; set; }
+
+        public string PasswordSalt { get; set; }
     }
 }

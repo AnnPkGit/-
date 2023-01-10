@@ -1,6 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using WEB_coursework_Site.DB.Context;
+﻿using WEB_coursework_Site.DB.Context;
 using WEB_coursework_Site.DB.Validators;
+using WEB_coursework_Site.Helpers.Hasher;
 
 namespace WEB_coursework_Site
 {
@@ -10,6 +10,7 @@ namespace WEB_coursework_Site
         {
             services.AddScoped<ISiteDbContextHelper, SiteDbContextHelper>();
             services.AddScoped<IEntityValidator, EntityValidator>();
+            services.AddScoped<IHasher, Hasher>();
         }
     }
 }

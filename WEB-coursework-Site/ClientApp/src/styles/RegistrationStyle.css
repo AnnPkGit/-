@@ -1,0 +1,61 @@
+.registerButtonContainer {
+  display: flex;
+  justify-content: center;
+}
+
+.registerForm {
+  margin-top: 15%;
+  display: inline-block;
+  width: 400px;
+  border: 2px solid #DADADA;
+  border-radius: 12px;
+  background-color: #D6D6D6;
+  color: #484848;
+}
+
+.registerInput {
+  border: 2px solid #E2E2E2;
+  background-color: #E2E2E2;
+  color: black;
+  text-align: center;
+  border-radius: 4px;
+  width: 85%;
+  padding: 2%;
+  display: inline-block;
+  margin-top: 1%;
+  margin-bottom: 1%;
+  margin-left: 2%;
+  margin-right: 2%;
+}
+
+.registerFormContainer {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+}
+
+.registerButton {
+  margin: 2%;
+  width: 50%;
+  border: 2px solid #2C96FF;
+  background-color: #2C96FF;
+  border-radius: 4px;
+  color: #E2E2E2;
+  font-weight: bold;
+  padding: 1%;
+}
+
+.registerSelect {
+  border: 2px solid #b0cfee;
+  background-color: #b0cfee;
+  color: black;
+  text-align: center;
+  border-radius: 4px;
+  width: 85%;
+  padding: 1%;
+  display: inline-block;
+  margin-top: 1%;
+  margin-bottom: 1%;
+  margin-left: 2%;
+  margin-right: 2%;
+}

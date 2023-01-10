@@ -17,6 +17,8 @@ code {
 
 @import "styles/AuthorizationStyle.css";
 
+@import "styles/RegistrationStyle.css";
+
 * {
   font-family: 'Yu Gothic UI';
 }

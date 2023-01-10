@@ -1,7 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System.Text.Json;
-using WEB_coursework_Site.DB.Entities;
+﻿using WEB_coursework_Site.DB.Entities;
 using WEB_coursework_Site.DB.Validators;
+using WEB_coursework_Site.Helpers.Hasher;
 using WEB_coursework_Site.Helpers.Results;
 using WEB_coursework_Site.Models;
 
@@ -11,10 +10,12 @@ namespace WEB_coursework_Site.DB.Context
     {
         private readonly SiteDbcontext _siteDbcontext;
         private readonly IEntityValidator _entityValidator;
-        public SiteDbContextHelper(SiteDbcontext siteDbcontext, IEntityValidator entityValidator)
+        private readonly IHasher _hasher;
+        public SiteDbContextHelper(SiteDbcontext siteDbcontext, IEntityValidator entityValidator, IHasher hasher)
         {
             _siteDbcontext = siteDbcontext ?? throw new NullReferenceException("SiteDbcontext is null at SiteDbContextHelper.cs");
-            _entityValidator = entityValidator ?? throw new NullReferenceException("IEntityValidator is null at SiteDbContextHelper.cs"); ;
+            _entityValidator = entityValidator ?? throw new NullReferenceException("IEntityValidator is null at SiteDbContextHelper.cs");
+            _hasher = hasher ?? throw new NullReferenceException("IHasher is null at SiteDbContextHelper.cs");
         }
 
         public async Task<Result<string>> AddUserAsync(UserModel userModel)
@@ -24,6 +25,10 @@ namespace WEB_coursework_Site.DB.Context
             {
                 return ResultCreator<string>.CreateFailedResult($"Failed to add user. Reason: {creationResult.Message}");
             }
+            if (_siteDbcontext.Users.Where(u => u.Login.Equals(userModel.Login)).FirstOrDefault() != null)
+            {
+                return ResultCreator<string>.CreateFailedResult($"Failed to add user. Reason: login is already in use");
+            }
 
             var secretQuestion = _siteDbcontext.SecretQuestions.Where(q => q.Question.Equals(userModel.SecretQuestion)).FirstOrDefault();
             if(secretQuestion == null)
@@ -32,7 +37,9 @@ namespace WEB_coursework_Site.DB.Context
             }
 
             var userToAdd = creationResult.Value;
-            userToAdd.SecretQuestionId = secretQuestion.Id.ToString();
+            userToAdd.SecretQuestionId = secretQuestion.Id;
+            userToAdd.PasswordSalt = _hasher.Hash(DateTime.Now.ToString());
+            userToAdd.Password = _hasher.Hash(userToAdd.Password + userToAdd.PasswordSalt);
 
             var result =  AddUserAndSaveChangesAsync(userToAdd);
             return await result;

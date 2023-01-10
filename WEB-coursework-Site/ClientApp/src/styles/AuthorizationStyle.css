@@ -4,9 +4,9 @@
 }
 
 .authForm {
-  padding-top: 25%;
+  margin-top: 25%;
   display: inline-block;
-  width: 35vh;
+  width: 350px;
 }
 
 .authInput {
@@ -23,7 +23,7 @@
 
 .authFormContainer {
   display: flex;
-  height: 100vh;
+  height: 100%;
   justify-content: center;
 }
 

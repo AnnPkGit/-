@@ -1,0 +1,25 @@
+<div class="registerFormContainer">
+  <form class="registerForm">
+    <label>Логин</label>
+    <input class="registerInput" type="text" [(ngModel)]="login" [ngModelOptions]="{standalone: true}" />
+    <label>Пароль</label>
+    <input class="registerInput" type="password" [(ngModel)]="password" [ngModelOptions]="{standalone: true}" />
+    <label>Подтверждение пароля</label>
+    <input class="registerInput" type="password" [(ngModel)]="passwordRecall" [ngModelOptions]="{standalone: true}" />
+    <label>Настоящее имя</label>
+    <input class="registerInput" type="text" [(ngModel)]="realName" [ngModelOptions]="{standalone: true}" />
+    <label>Почта</label>
+    <input class="registerInput" type="email" [(ngModel)]="email" [ngModelOptions]="{standalone: true}" />
+    <label>Секретный вопрос</label>
+    <select class="registerSelect">
+      <option>Позже будут опции</option>
+    </select>
+    <input class="registerInput" type="text" [(ngModel)]="secretQuestionAnswear" [ngModelOptions]="{standalone: true}" />
+    <label>Ваше фото</label>
+    <input class="registerInput" type="file" [(ngModel)]="avatar" [ngModelOptions]="{standalone: true}" />
+    <div class="registerButtonContainer">
+      <input class="registerButton" type="submit" value="Зарегестрироваться" (click)="registration()" />
+      <button class="registerButton" (click)="redirectToAuthorize()">Назад к авторизации</button>
+    </div>
+  </form>
+</div>

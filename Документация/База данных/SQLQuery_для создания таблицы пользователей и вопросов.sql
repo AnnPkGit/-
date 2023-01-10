@@ -24,3 +24,6 @@ VALUES (NEWID(), 'Ann', 'email@em.com', 'An', '123', '!тут должен быть айдишник 
 
 SELECT Users.RealName, SecretQuestions.Question, Users.SecretQuestionAnswear
 FROM Users JOIN SecretQuestions ON  Users.SecretQuestionId =  SecretQuestions.Id;
+
+ALTER TABLE Users
+ADD PasswordSalt varchar(255);

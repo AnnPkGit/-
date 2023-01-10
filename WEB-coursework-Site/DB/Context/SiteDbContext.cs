@@ -7,6 +7,8 @@ namespace WEB_coursework_Site.DB.Context
     {
         public DbSet<User> Users { get; set; }
 
+        public DbSet<SecretQuestion> SecretQuestions { get; set; }
+
         public SiteDbcontext(DbContextOptions options)
             : base(options) { }
     }

@@ -30,7 +30,14 @@ namespace WEB_coursework_Site.DB.Context
                 return ResultCreator<string>.CreateFailedResult($"Failed to add user. Reason: login is already in use");
             }
 
+            var secretQuestion = _siteDbcontext.SecretQuestions.Where(q => q.Question.Equals(userModel.SecretQuestion)).FirstOrDefault();
+            if(secretQuestion == null)
+            {
+                return ResultCreator<string>.CreateFailedResult($"Failed to add user. Reason: no such secret question exists");
+            }
+
             var userToAdd = creationResult.Value;
+            userToAdd.SecretQuestionId = secretQuestion.Id;
             userToAdd.PasswordSalt = _hasher.Hash(DateTime.Now.ToString());
             userToAdd.Password = _hasher.Hash(userToAdd.Password + userToAdd.PasswordSalt);
 

@@ -6,10 +6,8 @@
 
         public string? Text { get; set; }
 
-        public List<string>? Images { get; set; }
+        public int LikesCount { get; set; }
 
-        public int Likes { get; set; }
-
-        public int Comments { get; set; }
+        public int CommentsCount { get; set; }
     }
 }

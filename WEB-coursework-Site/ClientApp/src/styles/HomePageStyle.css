@@ -1,0 +1,48 @@
+.scroll-bg {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+}
+
+.scroll-div {
+  width: 720px;
+  height: 100%;
+  overflow: hidden;
+  overflow-y: scroll;
+  background-color: #F9F9F9;
+}
+
+.post-container {
+  box-shadow: -2px 2px #C8CAD4;
+  margin-left: 2%;
+  margin-right: 2%;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  padding: 2%;
+}
+
+.post-creator-container {
+  margin-left: 2%;
+  margin-right: 2%;
+  margin-top: 5px;
+  padding: 2%;
+  box-shadow: -2px 2px #C8CAD4;
+}
+
+.post-info-holder{
+    margin-top: 10px;
+}
+
+.post-info-holder span {
+  margin: 1%;
+}
+
+.scroll-div:hover {
+  background-color: aqua;
+  background-color: #E0E0E0;
+}
+
+.post-content{
+    width: 100%;
+}

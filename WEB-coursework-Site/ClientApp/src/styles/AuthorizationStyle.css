@@ -4,7 +4,6 @@
 }
 
 .authForm {
-  margin-top: 25%;
   display: inline-block;
   width: 350px;
 }
@@ -23,7 +22,8 @@
 
 .authFormContainer {
   display: flex;
-  height: 100%;
+  height: 100vh;
+  align-items: center;
   justify-content: center;
 }
 

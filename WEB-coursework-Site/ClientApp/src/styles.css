@@ -19,6 +19,8 @@ code {
 
 @import "styles/RegistrationStyle.css";
 
+@import "styles/HomePageStyle.css";
+
 * {
   font-family: 'Yu Gothic UI';
 }

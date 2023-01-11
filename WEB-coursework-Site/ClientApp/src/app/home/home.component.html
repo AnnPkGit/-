@@ -1,12 +1,12 @@
-<div class="authFormContainer">
-  <form class="authForm">
-    <label>Логин</label>
-    <input class="authInput" type="text" [(ngModel)]="login" [ngModelOptions]="{standalone: true}" />
-    <label>Пароль</label>
-    <input class="authInput" type="password" [(ngModel)]="password" [ngModelOptions]="{standalone: true}" />
-    <div class="authButtonContainer">
-      <input class="authButton" type="submit" value="Войти" (click)="authorize()"/>
-      <button class="authButton" (click)="redirectToRegistration()">Создать аккаунт</button>
+<div class="scroll-bg">
+  <div class="scroll-div">
+    <div class="post-creator-container">Место для будущего добавления поста</div>
+
+    <div class="post-container" *ngFor="let post of posts">
+      <div class="post-content">
+        {{post.text}}
+      </div>
+      <div class="post-info-holder"><span>💬</span><span>3232</span><span>❤️</span><span>2022</span></div>
     </div>
-  </form>
+  </div>
 </div>

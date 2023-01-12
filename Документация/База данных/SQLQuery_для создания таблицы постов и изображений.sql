@@ -32,3 +32,10 @@ VALUES ('2023-01-12T09:51:52.7052213+02:00');
 UPDATE Posts
 SET Date = '2023-01-12T09:51:52.7052213+02:00'
 WHERE Text = 'Well, today was a hard day';
+
+ALTER TABLE Posts
+ADD [AuthorId] uniqueidentifier;
+
+UPDATE Posts
+SET AuthorId = 'E6F7F00A-4694-4CCD-44DD-08DAF151331F';
+

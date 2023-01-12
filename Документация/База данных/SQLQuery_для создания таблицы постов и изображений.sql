@@ -22,3 +22,13 @@ VALUES (NEWID(), '7FC05C81-9D5D-46F7-AA62-2B0B3DD7B60C', 'SecondImage');
 
 SELECT Posts.Id, PostImages.Name
 FROM Posts JOIN PostImages ON  PostImages.RelatedPostId =  Posts.Id;
+
+ALTER TABLE Posts
+ADD [Date] DateTimeOffset;
+
+INSERT INTO Posts ([Date])
+VALUES ('2023-01-12T09:51:52.7052213+02:00');
+
+UPDATE Posts
+SET Date = '2023-01-12T09:51:52.7052213+02:00'
+WHERE Text = 'Well, today was a hard day';

@@ -1,6 +1,6 @@
-﻿namespace WEB_coursework_Site.DB.Entities
+﻿namespace WEB_coursework_Site.Models
 {
-    public class Post
+    public class PostModel
     {
         public Guid Id { get; set; }
 
@@ -12,6 +12,10 @@
 
         public DateTimeOffset Date { get; set; }
 
-        public Guid AuthorId { get; set; }
+        public string AuthorName { get; set; }
+
+        public string? AuthorAvatar { get; set; }
+
+        public List<string>? Images { get; set; }
     }
 }

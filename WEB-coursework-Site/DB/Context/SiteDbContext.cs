@@ -9,6 +9,10 @@ namespace WEB_coursework_Site.DB.Context
 
         public DbSet<SecretQuestion> SecretQuestions { get; set; }
 
+        public DbSet<Post> Posts { get; set; }
+
+        public DbSet<Image> PostImages { get; set; }
+
         public SiteDbcontext(DbContextOptions options)
             : base(options) { }
     }

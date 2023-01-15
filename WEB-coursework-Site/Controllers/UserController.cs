@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Text.Json;
 using WEB_coursework_Site.DB.Context;
 using WEB_coursework_Site.Models;
 
@@ -20,9 +21,17 @@ namespace WEB_coursework_Site.Controllers
             var result = await _siteDbContextHelper.AddUserAsync(userModel);
             if (!result.IsSuccessful)
             {
-                return result.Message;
+                return JsonSerializer.Serialize(result.Message);
             }
-            return "OK";
+            return JsonSerializer.Serialize("OK");
+        }
+
+        [HttpPost]
+        [Route("authorization")]
+        public async Task<string> AuthorizeAsync([FromBody] UserModel userModel)
+        {
+            var result = await _siteDbContextHelper.AuthorizeUserAsync(userModel);
+            return JsonSerializer.Serialize(result);
         }
     }
 }

@@ -114,5 +114,20 @@ namespace WEB_coursework_Site.DB.Context
 
             return postWithDateModels;
         }
+
+        public async Task<string> AuthorizeUserAsync(UserModel userModel)
+        {
+            return await Task.Run(() => FindUser(userModel));
+        }
+
+        public string FindUser(UserModel userModel)
+        {
+            var user = _siteDbcontext.Users.Where(u => u.Login.Equals(userModel.Login)).FirstOrDefault();
+            if (user == null)
+                return "No such user exists";
+
+            return _hasher.Hash(userModel.Password + user.PasswordSalt).Equals(user.Password) 
+                ? "Ok" : "No such user exists"; ;
+        }
     }
 }

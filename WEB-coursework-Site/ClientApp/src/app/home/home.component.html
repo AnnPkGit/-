@@ -1,12 +1,37 @@
 <div class="scroll-bg">
-  <div class="scroll-div">
+  <div class="scroll-div" (scroll)="onScroll($event)">
     <div class="post-creator-container">Место для будущего добавления поста</div>
 
     <div class="post-container" *ngFor="let post of posts">
-      <div class="post-content">
-        {{post.text}}
+
+      <div class="creation-info">
+        <b>{{post.authorName}}</b>
+        <span>{{post.date}}</span>
       </div>
-      <div class="post-info-holder"><span>💬</span><span>3232</span><span>❤️</span><span>2022</span></div>
+
+      <div class="post-content">
+
+        <div class="post-avatar">
+          <img src="https://ionicframework.com/docs/img/demos/avatar.svg" alt="avatar" class="avatar">
+        </div>
+
+        <div class="post-data">
+          <div>
+            {{post.text}}
+          </div>
+          <div *ngIf="post.images != null" class="post-image-container">
+            <div class="post-img"  *ngFor="let imageName of post.images">
+              <img src="{{imagesStoragePaths}}{{imageName}}.png" alt="{{imagesStoragePaths }}{{imageName}}.png">
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="post-info-holder">
+        <span>💬</span><span>{{post.commentsCount}}</span><span>❤️</span><span>{{post.likesCount}}</span>
+      </div>
+
     </div>
   </div>
 </div>

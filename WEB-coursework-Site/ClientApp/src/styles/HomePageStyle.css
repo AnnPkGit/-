@@ -18,8 +18,11 @@
   margin-left: 2%;
   margin-right: 2%;
   margin-top: 10px;
+  background-color: white;
   margin-bottom: 10px;
-  padding: 2%;
+  padding-left: 2%;
+  padding-right: 2%;
+  padding-bottom: 2%;
 }
 
 .post-creator-container {
@@ -43,6 +46,47 @@
   background-color: #E0E0E0;
 }
 
-.post-content{
-    width: 100%;
+.avatar {
+  border-radius: 50%;
+  height: 50px;
+}
+
+.post-content {
+  display: flex;
+}
+
+.post-avatar {
+  height: auto;
+}
+
+.post-data {
+  margin-left: 12px;
+  width: 100%;
+}
+
+.creation-info b {
+    font-size: 20px;
+}
+
+.creation-info span {
+  font-size: 13px;
+  float: right;
+  color: lightslategray;
+}
+
+.post-image-container {
+  background-color: silver;
+  display: grid;
+  height: 500px;
+  margin-top: 10px;
+}
+
+.post-img {
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+}
+
+.post-img img {
+  width: 100%;
 }

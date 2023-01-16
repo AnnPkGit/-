@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Component, Inject } from '@angular/core';
 
 @Component({
   selector: 'app-home',
@@ -6,44 +7,63 @@ import { Component } from '@angular/core';
 })
 
 export class HomeComponent {
-  public posts: Post[] = [];
+  public posts: PostModel[] = [];
+  public eldestDate: string = '';
+  public imagesStoragePaths: string = '';
+  newDataRequested: boolean = false;
+  http: HttpClient | undefined;
+  baseUrl: string = '';
 
-  constructor() {
-    this.posts = [
-      { text: "1 text" },
-      {
-        text: `Romeo and Juliet is a tragedy written by William Shakespeare early in his career about the romance between two Italian youths from feuding families.
-        It was among Shakespeares most popular plays during his lifetime and, along with Hamlet, is one of his most frequently performed plays.
-        Today, the title characters are regarded as archetypal young lovers.
-        Romeo and Juliet belongs to a tradition of tragic romances stretching back to antiquity.The plot is based on an Italian tale translated into verse
-        as The Tragical History of Romeus and Juliet by Arthur Brooke in 1562 and retold in prose in Palace of Pleasure by William Painter in 1567. Shakespeare borrowed
-        heavily from both but expanded the plot by developing a number of supporting characters, particularly Mercutio and Paris.Believed to have been written between
-        1591 and 1595, the play was first published in a quarto version in 1597.
-        The text of the first quarto version was of poor quality, however, and later editions corrected the text to conform more closely with Shakespeares original.` },
-      { text: "2 text" },
-      {
-        text: `Romeo and Juliet is a tragedy written by William Shakespeare early in his career about the romance between two Italian youths from feuding families.
-        It was among Shakespeares most popular plays during his lifetime and, along with Hamlet, is one of his most frequently performed plays.
-        Today, the title characters are regarded as archetypal young lovers.
-        Romeo and Juliet belongs to a tradition of tragic romances stretching back to antiquity.The plot is based on an Italian tale translated into verse
-        as The Tragical History of Romeus and Juliet by Arthur Brooke in 1562 and retold in prose in Palace of Pleasure by William Painter in 1567. Shakespeare borrowed
-        heavily from both but expanded the plot by developing a number of supporting characters, particularly Mercutio and Paris.Believed to have been written between
-        1591 and 1595, the play was first published in a quarto version in 1597.
-        The text of the first quarto version was of poor quality, however, and later editions corrected the text to conform more closely with Shakespeares original.` },
-      {
-        text: `Romeo and Juliet is a tragedy written by William Shakespeare early in his career about the romance between two Italian youths from feuding families.
-        It was among Shakespeares most popular plays during his lifetime and, along with Hamlet, is one of his most frequently performed plays.
-        Today, the title characters are regarded as archetypal young lovers.
-        Romeo and Juliet belongs to a tradition of tragic romances stretching back to antiquity.The plot is based on an Italian tale translated into verse
-        as The Tragical History of Romeus and Juliet by Arthur Brooke in 1562 and retold in prose in Palace of Pleasure by William Painter in 1567. Shakespeare borrowed
-        heavily from both but expanded the plot by developing a number of supporting characters, particularly Mercutio and Paris.Believed to have been written between
-        1591 and 1595, the play was first published in a quarto version in 1597.
-        The text of the first quarto version was of poor quality, however, and later editions corrected the text to conform more closely with Shakespeares original.` }
-    ];
+  constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
+    this.imagesStoragePaths = '../assets/Images/PostImages/';
+    this.http = http;
+    this.baseUrl = baseUrl + 'content';
+    http.get<any>(this.baseUrl).subscribe(result => {
+      this.posts = result["postModels"];
+      this.eldestDate = result["eldestDate"];
+    }, error => console.error(error));
   }
 
+  onScroll($event: any) {
+    if ($event.target.offsetHeight + $event.target.scrollTop >= $event.target.scrollHeight) {
+      console.log("End");
+
+      if (this.eldestDate == '')
+        return;
+
+      if (this.newDataRequested == false) {
+        this.newDataRequested = true;
+
+        this.http?.get<any>(this.baseUrl + `?startTime=${this.eldestDate}`).subscribe(result => {
+          this.posts = this.posts.concat(result["postModels"]);
+
+          if (result["eldestDate"] != "0001-01-01T00:00:00") {
+            this.eldestDate = result["eldestDate"];
+          }
+          else {
+            setTimeout(() => this.releaseDataRequest(), 10000);
+            return;
+          }
+
+          setTimeout(() => this.releaseDataRequest(), 10);
+        }, error => console.error(error));
+      }
+    }
+  }
+
+  releaseDataRequest() {
+    this.newDataRequested = false;
+    console.log("data request avaliable again");
+  }
 }
 
-interface Post {
+interface PostModel {
+  id: string;
   text: string;
+  likesCount: number;
+  commentsCount: number;
+  date: string;
+  authorName: string;
+  authorAvatar : string;
+  images: string[];
 }

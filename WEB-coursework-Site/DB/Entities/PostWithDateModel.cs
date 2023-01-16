@@ -6,6 +6,6 @@ namespace WEB_coursework_Site.DB.Entities
     {
         public List<PostModel>? PostModels { get; set; }
 
-        public DateTimeOffset EldestDate { get; set; }
+        public DateTime EldestDate { get; set; }
     }
 }

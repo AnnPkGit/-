@@ -1,6 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System.Linq;
-using WEB_coursework_Site.DB.Entities;
+﻿using WEB_coursework_Site.DB.Entities;
 using WEB_coursework_Site.DB.Validators;
 using WEB_coursework_Site.Helpers.Hasher;
 using WEB_coursework_Site.Helpers.Results;
@@ -13,7 +11,7 @@ namespace WEB_coursework_Site.DB.Context
         private readonly SiteDbcontext _siteDbcontext;
         private readonly IEntityValidator _entityValidator;
         private readonly IHasher _hasher;
-        private const int _postPerPage = 20;
+        private const int _postPerPage = 10;
 
         public SiteDbContextHelper(SiteDbcontext siteDbcontext, IEntityValidator entityValidator, IHasher hasher)
         {
@@ -65,7 +63,10 @@ namespace WEB_coursework_Site.DB.Context
 
         public async Task<PostWithDateModel> GetPostsAsync(DateTimeOffset startTime)
         {
-            return await Task.Run(() => GetPosts(startTime));
+            //с фронта приходит дата без offset и при конвертации в DateTimeOffset добавляется локальное смещение т.е. 2 часа
+            //TODO: убрать необходимость добавления 2-х часов после конвертации в Utc т.к. это работает толь =ко для часового пояса +02:00
+            var dbDateFormat = startTime != DateTimeOffset.MinValue ? startTime.UtcDateTime.AddHours(2) : startTime;
+            return await Task.Run(() => GetPosts(dbDateFormat));
         }
 
         private PostWithDateModel GetPosts(DateTimeOffset startTime)
@@ -109,7 +110,7 @@ namespace WEB_coursework_Site.DB.Context
             var postWithDateModels = new PostWithDateModel()
             {
                 PostModels = postModels,
-                EldestDate = postModels.Any() ? postModels.Last().Date : DateTimeOffset.MinValue
+                EldestDate = postModels.Any() ? postModels.Last().Date.DateTime : DateTimeOffset.MinValue.DateTime
             };
 
             return postWithDateModels;

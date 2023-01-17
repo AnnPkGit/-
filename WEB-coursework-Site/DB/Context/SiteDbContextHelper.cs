@@ -23,7 +23,7 @@ namespace WEB_coursework_Site.DB.Context
         public async Task<Result<string>> AddUserAsync(UserModel userModel)
         {
             var creationResult = _entityValidator.CreateAndValidateUser(userModel);
-            if(!creationResult.IsSuccessful)
+            if (!creationResult.IsSuccessful)
             {
                 return ResultCreator<string>.CreateFailedResult($"Failed to add user. Reason: {creationResult.Message}");
             }
@@ -33,7 +33,7 @@ namespace WEB_coursework_Site.DB.Context
             }
 
             var secretQuestion = _siteDbcontext.SecretQuestions.Where(q => q.Question.Equals(userModel.SecretQuestion)).FirstOrDefault();
-            if(secretQuestion == null)
+            if (secretQuestion == null)
             {
                 return ResultCreator<string>.CreateFailedResult($"Failed to add user. Reason: no such secret question exists");
             }
@@ -54,7 +54,7 @@ namespace WEB_coursework_Site.DB.Context
                 await _siteDbcontext.Users.AddAsync(user);
                 await _siteDbcontext.SaveChangesAsync();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return ResultCreator<string>.CreateFailedResult(ex.Message);
             }
@@ -74,21 +74,29 @@ namespace WEB_coursework_Site.DB.Context
             var posts = new List<Post>();
             if (startTime == DateTimeOffset.MinValue)
             {
-                posts = _siteDbcontext.Posts.Select(p => p).OrderByDescending(p => p.Date).Take(_postPerPage).ToList();
+                posts = (from t in _siteDbcontext.Posts
+                         orderby t.Date descending
+                         select t).Take(_postPerPage).ToList();
             }
             else
             {
-                posts = _siteDbcontext.Posts.Where(p => DateTimeOffset.Compare(p.Date, startTime) < 0)
-                    .OrderByDescending(p => p.Date).Take(_postPerPage).ToList();
+                posts = (from t in _siteDbcontext.Posts
+                         where t.Date < startTime
+                         orderby t.Date descending
+                         select t).Take(_postPerPage).ToList();
             }
+
+            var postWithDateModels = new PostWithDateModel();
+            if (!posts.Any())
+                return postWithDateModels;
 
             var postsWithUsers = from user in _siteDbcontext.Users.Select(u => u).ToList()
                                  join post in posts on user.Id equals post.AuthorId
-                                 select new { Post = post, User = user};
+                                 select new { Post = post, User = user };
 
             var relatedImages = from image in _siteDbcontext.PostImages.Select(i => i).ToList()
-                            group image by image.RelatedPostId into g
-                            select new { Key = g.Key, Images = g.ToList() };
+                                group image by image.RelatedPostId into g
+                                select new { Key = g.Key, Images = g.ToList() };
 
             var postModels = new List<PostModel>(20);
             foreach (var postWuser in postsWithUsers)
@@ -106,12 +114,10 @@ namespace WEB_coursework_Site.DB.Context
                     AuthorAvatar = postWuser.User.Avatar
                 });
             }
+            postModels = postModels.OrderByDescending(p => p.Date).ToList();
 
-            var postWithDateModels = new PostWithDateModel()
-            {
-                PostModels = postModels,
-                EldestDate = postModels.Any() ? postModels.Last().Date.DateTime : DateTimeOffset.MinValue.DateTime
-            };
+            postWithDateModels.PostModels = postModels;
+            postWithDateModels.EldestDate = postModels.Last().Date.DateTime;
 
             return postWithDateModels;
         }
@@ -127,8 +133,42 @@ namespace WEB_coursework_Site.DB.Context
             if (user == null)
                 return "No such user exists";
 
-            return _hasher.Hash(userModel.Password + user.PasswordSalt).Equals(user.Password) 
+            return _hasher.Hash(userModel.Password + user.PasswordSalt).Equals(user.Password)
                 ? "Ok" : "No such user exists"; ;
+        }
+
+        public async Task<string> PostContentAsync(PostToAddModel postModel)
+        {
+            var creationResult = _entityValidator.CreateAndValidatePost(postModel);
+            if (!creationResult.IsSuccessful)
+            {
+                return $"Failed to add post. Reason: {creationResult.Message}";
+            }
+            var postToAdd = creationResult.Value;
+
+            var relatedUserResult = _siteDbcontext.Users.Where(u => u.Login.Equals(postModel.Login)).FirstOrDefault();
+            if (relatedUserResult == null)
+            {
+                return "Failed to add post. Reason: no corresponding user";
+            }
+
+            postToAdd.AuthorId = relatedUserResult.Id;
+            var result = await AddPostAndSaveChangesAsync(postToAdd);
+            return "Ok";
+        }
+
+        private async Task<Result<string>> AddPostAndSaveChangesAsync(Post post)
+        {
+            try
+            {
+                await _siteDbcontext.Posts.AddAsync(post);
+                await _siteDbcontext.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                return ResultCreator<string>.CreateFailedResult(ex.Message);
+            }
+            return ResultCreator<string>.CreateSuccessfulResult("Ok");
         }
     }
 }

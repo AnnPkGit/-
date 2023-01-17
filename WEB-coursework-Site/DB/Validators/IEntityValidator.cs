@@ -7,5 +7,7 @@ namespace WEB_coursework_Site.DB.Validators
     public interface IEntityValidator
     {
         Result<User> CreateAndValidateUser(UserModel userModel);
+
+        Result<Post> CreateAndValidatePost(PostToAddModel postModel);
     }
 }

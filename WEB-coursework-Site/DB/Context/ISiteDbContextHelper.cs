@@ -11,5 +11,7 @@ namespace WEB_coursework_Site.DB.Context
         Task<string> AuthorizeUserAsync(UserModel userModel);
 
         Task<PostWithDateModel> GetPostsAsync(DateTimeOffset startTime);
+
+        Task<string> PostContentAsync(PostToAddModel postModel);
     }
 }

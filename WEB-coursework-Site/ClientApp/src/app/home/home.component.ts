@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, Inject } from '@angular/core';
+import { LocalData } from '../globals/localstorage.component';
 
 @Component({
   selector: 'app-home',
@@ -54,6 +55,10 @@ export class HomeComponent {
   releaseDataRequest() {
     this.newDataRequested = false;
     console.log("data request avaliable again");
+  }
+
+  public isAuthorized(): boolean {
+    return LocalData.isAuthorized();
   }
 }
 

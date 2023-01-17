@@ -1,6 +1,6 @@
 <div class="scroll-bg">
   <div class="scroll-div" (scroll)="onScroll($event)">
-    <div class="post-creator-container">Место для будущего добавления поста</div>
+    <div *ngIf="isAuthorized()" class="post-creator-container">Место для будущего добавления поста</div>
 
     <div class="post-container" *ngFor="let post of posts">
 

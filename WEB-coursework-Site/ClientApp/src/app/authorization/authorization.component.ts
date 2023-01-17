@@ -26,14 +26,13 @@ export class AuthorizationComponent {
     let userData: AuthorizationUserModel = { login: this.login, password: this.password };
 
     this.http?.post<string>(this.baseUrl + 'user/authorization', userData).subscribe(result => {
-      console.log(result);
-      if (result == 'Ok') {
+      if (result != 'User does not exist') {
         this.error = '';
-        window.localStorage.setItem('user', JSON.stringify(userData.login));
+        LocalData.saveAuthorized(userData.login, result);
         this.router?.navigate(['/']);
       }
       else {
-        this.error = "User does not exist";
+        this.error = result;
       }
       this.login = '';
       this.password = '';

@@ -13,6 +13,8 @@ namespace WEB_coursework_Site.DB.Context
 
         public DbSet<Image> PostImages { get; set; }
 
+        public DbSet<Token> Tokens { get; set; }
+
         public SiteDbcontext(DbContextOptions options)
             : base(options) { }
     }

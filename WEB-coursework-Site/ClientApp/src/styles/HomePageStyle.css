@@ -31,6 +31,7 @@
   margin-top: 5px;
   padding: 2%;
   box-shadow: -2px 2px #C8CAD4;
+  background-color: white;
 }
 
 .post-info-holder{
@@ -89,4 +90,33 @@
 
 .post-img img {
   width: 100%;
+}
+
+.created-text {
+  width: 100%;
+  outline-style: none;
+  box-shadow: none;
+  border-color: transparent;
+}
+
+.created-text:focus {
+  outline-style: none;
+  box-shadow: none;
+  border-color: transparent;
+}
+
+.buttons {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.post-creator-container button {
+  margin: 2%;
+  width: 150px;
+  border: 2px solid #2C96FF;
+  background-color: #2C96FF;
+  border-radius: 4px;
+  color: #E2E2E2;
+  font-weight: bold;
+  padding: 1%;
 }

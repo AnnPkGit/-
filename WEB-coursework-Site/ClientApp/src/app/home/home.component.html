@@ -1,6 +1,19 @@
 <div class="scroll-bg">
   <div class="scroll-div" (scroll)="onScroll($event)">
-    <div class="post-creator-container">Место для будущего добавления поста</div>
+
+    <div class="post-creator-container">
+      <div class="post-content">
+        <div class="post-avatar">
+          <img src="https://ionicframework.com/docs/img/demos/avatar.svg" alt="avatar" class="avatar">
+        </div>
+        <div class="post-data">
+          <textarea class="created-text" cols="20" rows="3" wrap="hard" maxlength="300" placeholder="Что происходит?"></textarea>
+        </div>
+      </div>
+      <div class="buttons">
+      <button>Запостить</button>
+        </div>
+    </div>
 
     <div class="post-container" *ngFor="let post of posts">
 

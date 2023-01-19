@@ -21,6 +21,8 @@ code {
 
 @import "styles/HomePageStyle.css";
 
+@import "styles/PostPageStyle.css";
+
 * {
   font-family: 'Yu Gothic UI';
 }

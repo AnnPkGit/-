@@ -1,0 +1,13 @@
+.page-info {
+  box-shadow: -2px 2px #C8CAD4;
+  background-color: white;
+  padding-left: 2%;
+  padding-right: 2%;
+  padding-bottom: 2%;
+}
+
+.page-info img {
+    height: 20px;
+    margin-right: 5%;
+    margin-left: 2%;
+}

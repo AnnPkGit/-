@@ -13,5 +13,7 @@ namespace WEB_coursework_Site.DB.Context
         Task<PostWithDateModel> GetPostsAsync(DateTimeOffset startTime);
 
         Task<string> PostContentAsync(PostToAddModel postModel);
+
+        Task<Result<PostModel>> GetPostById(Guid id);
     }
 }

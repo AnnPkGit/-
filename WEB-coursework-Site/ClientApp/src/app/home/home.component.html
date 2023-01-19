@@ -28,12 +28,12 @@
           <img src="https://ionicframework.com/docs/img/demos/avatar.svg" alt="avatar" class="avatar">
         </div>
 
-        <div class="post-data">
+        <div class="post-data" (click)="RedirectToPostPage(post.id)">
           <div>
             {{post.text}}
           </div>
           <div *ngIf="post.images != null" class="post-image-container">
-            <div class="post-img"  *ngFor="let imageName of post.images">
+            <div class="post-img" *ngFor="let imageName of post.images">
               <img src="{{imagesStoragePaths}}{{imageName}}.png" alt="{{imagesStoragePaths }}{{imageName}}.png">
             </div>
           </div>

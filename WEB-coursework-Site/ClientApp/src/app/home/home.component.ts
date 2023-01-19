@@ -1,6 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, Inject } from '@angular/core';
+import { Router } from '@angular/router';
 import { LocalData } from '../globals/localstorage.component';
+import { PostModel } from '../globals/PostModelInterfave';
 
 @Component({
   selector: 'app-home',
@@ -15,7 +17,7 @@ export class HomeComponent {
   http: HttpClient | undefined;
   baseUrl: string = '';
 
-  constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
+  constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string, private route: Router) {
     this.imagesStoragePaths = '../assets/Images/PostImages/';
     this.http = http;
     this.baseUrl = baseUrl + 'content';
@@ -59,15 +61,10 @@ export class HomeComponent {
   public isAuthorized(): boolean {
     return LocalData.isAuthorized();
   }
-}
 
-interface PostModel {
-  id: string;
-  text: string;
-  likesCount: number;
-  commentsCount: number;
-  date: string;
-  authorName: string;
-  authorAvatar : string;
-  images: string[];
+  public RedirectToPostPage(id : string) {
+    console.log(id);
+    var path = `/page/${id}`
+    this.route?.navigate([path]);
+  }
 }

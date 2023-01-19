@@ -37,5 +37,17 @@ namespace WEB_coursework_Site.Controllers
             var result = await _siteDbContextHelper.PostContentAsync(postModel);
             return JsonSerializer.Serialize(result);
         }
+
+        [HttpGet]
+        [Route("{id}")]
+        public async Task<PostModel> GetPostByIdAsync(Guid id)
+        {
+            var result = await _siteDbContextHelper.GetPostById(id);
+            if (!result.IsSuccessful)
+            {
+                return null;
+            }
+            return result.Value;
+        }
     }
 }

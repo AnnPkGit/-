@@ -5,5 +5,7 @@
         public string Text { get; set; }
 
         public string Login { get; set; }   
+
+        public string AccessToken { get; set; }
     }
 }

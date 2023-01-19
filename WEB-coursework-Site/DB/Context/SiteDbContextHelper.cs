@@ -159,6 +159,14 @@ namespace WEB_coursework_Site.DB.Context
                 return "Failed to add post. Reason: no corresponding user";
             }
 
+            var token = _siteDbcontext.Tokens.Where(t => t.RelatedUserId.Equals(relatedUserResult.Id) 
+                && t.AccessToken.Equals(postModel.AccessToken)).FirstOrDefault();
+            if(token == null)
+            {
+                return "Access denied";
+            }
+
+
             postToAdd.AuthorId = relatedUserResult.Id;
             var result = await AddPostAndSaveChangesAsync(postToAdd);
             return "Ok";

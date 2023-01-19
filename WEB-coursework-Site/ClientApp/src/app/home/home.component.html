@@ -1,7 +1,7 @@
 <div class="scroll-bg">
   <div class="scroll-div" (scroll)="onScroll($event)">
 
-    <div class="post-creator-container">
+    <div *ngIf="isAuthorized()" class="post-creator-container">
       <div class="post-content">
         <div class="post-avatar">
           <img src="https://ionicframework.com/docs/img/demos/avatar.svg" alt="avatar" class="avatar">

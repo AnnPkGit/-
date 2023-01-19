@@ -127,14 +127,21 @@ namespace WEB_coursework_Site.DB.Context
             return await Task.Run(() => FindUser(userModel));
         }
 
-        public string FindUser(UserModel userModel)
+        public async Task<string> FindUser(UserModel userModel)
         {
             var user = _siteDbcontext.Users.Where(u => u.Login.Equals(userModel.Login)).FirstOrDefault();
-            if (user == null)
-                return "No such user exists";
-
-            return _hasher.Hash(userModel.Password + user.PasswordSalt).Equals(user.Password)
-                ? "Ok" : "No such user exists"; ;
+            if (user != null && _hasher.Hash(userModel.Password + user.PasswordSalt).Equals(user.Password))
+            {
+                var token = _siteDbcontext.Tokens.Where(t => t.RelatedUserId.Equals(user.Id)).FirstOrDefault()?.AccessToken;
+                if(String.IsNullOrEmpty(token))
+                {
+                    token = $"{Guid.NewGuid()}_token";
+                    await _siteDbcontext.Tokens.AddAsync(new Token() { AccessToken = token, RelatedUserId = user.Id, Id = Guid.NewGuid() });
+                    await _siteDbcontext.SaveChangesAsync();
+                }
+                return token;
+            }
+            return "User does not exist";
         }
 
         public async Task<string> PostContentAsync(PostToAddModel postModel)

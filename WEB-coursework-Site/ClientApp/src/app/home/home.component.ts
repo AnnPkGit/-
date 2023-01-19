@@ -36,9 +36,8 @@ export class HomeComponent {
         this.newDataRequested = true;
 
         this.http?.get<any>(this.baseUrl + `?startTime=${this.eldestDate}`).subscribe(result => {
-          this.posts = this.posts.concat(result["postModels"]);
-
           if (result["eldestDate"] != "0001-01-01T00:00:00") {
+            this.posts = this.posts.concat(result["postModels"]);
             this.eldestDate = result["eldestDate"];
           }
           else {

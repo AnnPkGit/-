@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Text.Json;
 using WEB_coursework_Site.DB.Context;
 using WEB_coursework_Site.DB.Entities;
+using WEB_coursework_Site.Models;
 
 namespace WEB_coursework_Site.Controllers
 {
@@ -27,6 +29,13 @@ namespace WEB_coursework_Site.Controllers
             {
                 return new PostWithDateModel();
             }
+        }
+
+        [HttpPost]
+        public async Task<string> PostAsync([FromBody] PostToAddModel postModel)
+        {
+            var result = await _siteDbContextHelper.PostContentAsync(postModel);
+            return JsonSerializer.Serialize(result);
         }
     }
 }

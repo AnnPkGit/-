@@ -1,6 +1,4 @@
-﻿using WEB_coursework_Site.Models;
-
-namespace WEB_coursework_Site.DB.Entities
+﻿namespace WEB_coursework_Site.Models
 {
     public class PostWithDateModel
     {

@@ -15,6 +15,8 @@ namespace WEB_coursework_Site.DB.Context
 
         public DbSet<Token> Tokens { get; set; }
 
+        public DbSet<Comment> Comments { get; set; }
+
         public SiteDbcontext(DbContextOptions options)
             : base(options) { }
     }

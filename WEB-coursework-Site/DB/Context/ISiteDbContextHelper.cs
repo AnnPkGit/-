@@ -1,5 +1,4 @@
-﻿using WEB_coursework_Site.DB.Entities;
-using WEB_coursework_Site.Helpers.Results;
+﻿using WEB_coursework_Site.Helpers.Results;
 using WEB_coursework_Site.Models;
 
 namespace WEB_coursework_Site.DB.Context
@@ -15,5 +14,7 @@ namespace WEB_coursework_Site.DB.Context
         Task<string> PostContentAsync(PostToAddModel postModel);
 
         Task<Result<PostModel>> GetPostById(Guid id);
+
+        Task<CommentWithDateModel> GetCommentsAsync(DateTimeOffset startTime, Guid postId);
     }
 }

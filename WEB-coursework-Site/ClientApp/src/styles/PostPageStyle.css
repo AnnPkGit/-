@@ -4,10 +4,13 @@
   padding-left: 2%;
   padding-right: 2%;
   padding-bottom: 2%;
+  display: flex;
+  padding-top: 2%;
 }
 
 .page-info img {
     height: 20px;
     margin-right: 5%;
     margin-left: 2%;
+    margin-top: 0.5%;
 }

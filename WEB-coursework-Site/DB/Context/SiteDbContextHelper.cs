@@ -99,7 +99,7 @@ namespace WEB_coursework_Site.DB.Context
                                 group image by image.RelatedPostId into g
                                 select new { Key = g.Key, Images = g.ToList() };
 
-            var postModels = new List<PostModel>(20);
+            var postModels = new List<PostModel>(_postPerPage);
             foreach (var postWuser in postsWithUsers)
             {
                 postModels.Add(new PostModel()
@@ -160,6 +160,14 @@ namespace WEB_coursework_Site.DB.Context
                 return "Failed to add post. Reason: no corresponding user";
             }
 
+            var token = _siteDbcontext.Tokens.Where(t => t.RelatedUserId.Equals(relatedUserResult.Id) 
+                && t.AccessToken.Equals(postModel.AccessToken)).FirstOrDefault();
+            if(token == null)
+            {
+                return "Access denied";
+            }
+
+
             postToAdd.AuthorId = relatedUserResult.Id;
             var result = await AddPostAndSaveChangesAsync(postToAdd);
             return "Ok";
@@ -213,6 +221,67 @@ namespace WEB_coursework_Site.DB.Context
             };
 
             return ResultCreator<PostModel>.CreateSuccessfulResult(postModel);
+        }
+
+        public async Task<CommentWithDateModel> GetCommentsAsync(DateTimeOffset startTime, Guid postId)
+        {
+            //с фронта приходит дата без offset и при конвертации в DateTimeOffset добавляется локальное смещение т.е. 2 часа
+            //TODO: убрать необходимость добавления 2-х часов после конвертации в Utc т.к. это работает толь =ко для часового пояса +02:00
+            var dbDateFormat = startTime != DateTimeOffset.MinValue ? startTime.UtcDateTime.AddHours(2) : startTime;
+            return await Task.Run(() => GetComments( startTime, postId));
+        }
+
+        private CommentWithDateModel GetComments(DateTimeOffset startTime, Guid postId)
+        {
+            var comments = new List<Comment>();
+            if (startTime == DateTimeOffset.MinValue)
+            {
+                comments = (from t in _siteDbcontext.Comments
+                         where t.PostId.Equals(postId)
+                         orderby t.Date descending
+                         select t).Take(_postPerPage).ToList();
+            }
+            else
+            {
+                comments = (from t in _siteDbcontext.Comments
+                         where t.Date < startTime && t.PostId.Equals(postId)
+                         orderby t.Date descending
+                         select t).Take(_postPerPage).ToList();
+            }
+
+            var commentsWithDateModel = new CommentWithDateModel();
+            if (!comments.Any())
+                return commentsWithDateModel;
+
+            var commentsWithUsers = from user in _siteDbcontext.Users.Select(u => u).ToList()
+                                 join comment in comments on user.Id equals comment.AuthorId
+                                 select new { Comment = comment, User = user };
+
+            var relatedImages = from image in _siteDbcontext.PostImages.Select(i => i).ToList()
+                                group image by image.RelatedPostId into g
+                                select new { Key = g.Key, Images = g.ToList() };
+
+            var commentModels = new List<CommentModel>(_postPerPage);
+            foreach (var commentWuser in commentsWithUsers)
+            {
+                commentModels.Add(new CommentModel()
+                {
+                    AuthorName = commentWuser.User.Login,
+                    Date = commentWuser.Comment.Date,
+                    Id = commentWuser.Comment.Id,
+                    LikesCount = commentWuser.Comment.LikesCount,
+                    Text = commentWuser.Comment.Text,
+                    Images = relatedImages.Where(k => k.Key == commentWuser.Comment.Id)
+                    .Select(i => i.Images.Select(b => b.Name).ToList()).FirstOrDefault(),
+                    AuthorAvatar = commentWuser.User.Avatar
+                });
+            }
+            commentModels = commentModels.OrderByDescending(p => p.Date).ToList();
+
+            commentsWithDateModel.Comments = commentModels;
+            commentsWithDateModel.EldestDate = commentModels.Last().Date.DateTime;
+
+            return commentsWithDateModel;
         }
     }
 }

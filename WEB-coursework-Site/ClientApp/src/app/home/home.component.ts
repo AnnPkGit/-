@@ -16,6 +16,8 @@ export class HomeComponent {
   newDataRequested: boolean = false;
   http: HttpClient | undefined;
   baseUrl: string = '';
+  public valueText: string = '';
+  public error: string = '';
 
   constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string, private route: Router) {
     this.imagesStoragePaths = '../assets/Images/PostImages/';
@@ -58,13 +60,33 @@ export class HomeComponent {
     console.log("data request avaliable again");
   }
 
-  public isAuthorized(): boolean {
+  isAuthorized(): boolean {
     return LocalData.isAuthorized();
   }
 
-  public RedirectToPostPage(id : string) {
+  addPost() {
+    if (this.valueText.trim() == '')
+      return;
+
+    let newPost: PostToAddModel = { text: this.valueText, login: LocalData.GetUserLogin(), accessToken: LocalData.GetUserToken()}
+    this.http?.post<string>(this.baseUrl, newPost).subscribe(result => {
+      this.valueText = '';
+      this.error = '';
+      if (result != "Ok") {
+        this.error = "Что-то пошло не так";
+      }
+    }, error => console.error(error));
+  }
+
+  public RedirectToPostPage(id: string) {
     console.log(id);
     var path = `/page/${id}`
     this.route?.navigate([path]);
   }
+}
+
+interface PostToAddModel {
+  text: string;
+  login: string;
+  accessToken: string;
 }

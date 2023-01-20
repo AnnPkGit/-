@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System.Text.Json;
 using WEB_coursework_Site.DB.Context;
 using WEB_coursework_Site.Models;
 
@@ -7,34 +6,27 @@ namespace WEB_coursework_Site.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class ContentController : ControllerBase
+    public class CommentController : ControllerBase
     {
         private readonly ISiteDbContextHelper _siteDbContextHelper;
 
-        public ContentController(ISiteDbContextHelper siteDbContextHelper)
+        public CommentController(ISiteDbContextHelper siteDbContextHelper)
         {
             _siteDbContextHelper = siteDbContextHelper ?? throw new NullReferenceException("ISiteDbContextHelper is null at PostController.cs");
         }
 
         [HttpGet]
-        public async Task<PostWithDateModel> GetAsync(DateTimeOffset startTime)
+        public async Task<CommentWithDateModel> GetAsync(DateTimeOffset startTime, Guid postId)
         {
-            var result = _siteDbContextHelper.GetPostsAsync(startTime);
+            var result = _siteDbContextHelper.GetCommentsAsync(startTime, postId);
             try
             {
                 return await result;
             }
             catch
             {
-                return new PostWithDateModel();
+                return new CommentWithDateModel();
             }
-        }
-
-        [HttpPost]
-        public async Task<string> PostAsync([FromBody] PostToAddModel postModel)
-        {
-            var result = await _siteDbContextHelper.PostContentAsync(postModel);
-            return JsonSerializer.Serialize(result);
         }
     }
 }

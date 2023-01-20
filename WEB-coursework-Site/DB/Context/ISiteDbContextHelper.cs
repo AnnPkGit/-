@@ -13,6 +13,8 @@ namespace WEB_coursework_Site.DB.Context
 
         Task<string> PostContentAsync(PostToAddModel postModel);
 
+        Task<Result<PostModel>> GetPostById(Guid id);
+
         Task<CommentWithDateModel> GetCommentsAsync(DateTimeOffset startTime, Guid postId);
     }
 }

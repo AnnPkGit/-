@@ -1,4 +1,5 @@
-﻿using WEB_coursework_Site.DB.Entities;
+﻿using Microsoft.EntityFrameworkCore.Infrastructure.Internal;
+using WEB_coursework_Site.DB.Entities;
 using WEB_coursework_Site.DB.Validators;
 using WEB_coursework_Site.Helpers.Hasher;
 using WEB_coursework_Site.Helpers.Results;
@@ -184,6 +185,42 @@ namespace WEB_coursework_Site.DB.Context
                 return ResultCreator<string>.CreateFailedResult(ex.Message);
             }
             return ResultCreator<string>.CreateSuccessfulResult("Ok");
+        }
+
+        public async Task<Result<PostModel>> GetPostById(Guid id)
+        {
+            return await Task.Run(() => FindPost(id));
+        }
+
+        private async Task<Result<PostModel>> FindPost(Guid id)
+        {
+            var post = await _siteDbcontext.Posts.FindAsync(id);
+            if (post == null) 
+            {
+                return ResultCreator<PostModel>.CreateFailedResult("Not found");
+            }
+            
+            var user = await _siteDbcontext.Users.FindAsync(post.AuthorId);
+            if (user == null)
+            {
+                return ResultCreator<PostModel>.CreateFailedResult("No corresponding user");
+            }
+
+            var images = _siteDbcontext.PostImages.Where(i => i.RelatedPostId == post.Id).Select(i => i.Name).ToList();
+
+            var postModel = new PostModel()
+            {
+                CommentsCount = post.CommentsCount,
+                Date = post.Date,
+                Id = post.Id,
+                LikesCount = post.LikesCount,
+                Text = post.Text,
+                AuthorName = user.Login,
+                Images = images.Any() ? images : null,
+                AuthorAvatar = user.Avatar
+            };
+
+            return ResultCreator<PostModel>.CreateSuccessfulResult(postModel);
         }
 
         public async Task<CommentWithDateModel> GetCommentsAsync(DateTimeOffset startTime, Guid postId)

@@ -11,6 +11,7 @@ import { CounterComponent } from './counter/counter.component';
 import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { AuthorizationComponent } from './authorization/authorization.component';
 import { Registration } from './registration/registration';
+import { PageComponent } from './page/page.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { Registration } from './registration/registration';
     CounterComponent,
     FetchDataComponent,
     AuthorizationComponent,
-    Registration
+    Registration,
+    PageComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -32,6 +34,7 @@ import { Registration } from './registration/registration';
       { path: 'fetch-data', component: FetchDataComponent },
       { path: 'authorization', component: AuthorizationComponent },
       { path: 'registration', component: Registration },
+      { path: 'page/:id', component: PageComponent },
     ])
   ],
   providers: [],

@@ -1,6 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, Inject } from '@angular/core';
+import { Router } from '@angular/router';
 import { LocalData } from '../globals/localstorage.component';
+import { PostModel } from '../globals/PostModelInterfave';
 
 @Component({
   selector: 'app-home',
@@ -17,7 +19,7 @@ export class HomeComponent {
   public valueText: string = '';
   public error: string = '';
 
-  constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
+  constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string, private route: Router) {
     this.imagesStoragePaths = '../assets/Images/PostImages/';
     this.http = http;
     this.baseUrl = baseUrl + 'content';
@@ -75,21 +77,16 @@ export class HomeComponent {
       }
     }, error => console.error(error));
   }
+
+  public RedirectToPostPage(id: string) {
+    console.log(id);
+    var path = `/page/${id}`
+    this.route?.navigate([path]);
+  }
 }
 
 interface PostToAddModel {
   text: string;
   login: string;
   accessToken: string;
-}
-
-interface PostModel {
-  id: string;
-  text: string;
-  likesCount: number;
-  commentsCount: number;
-  date: string;
-  authorName: string;
-  authorAvatar : string;
-  images: string[];
 }

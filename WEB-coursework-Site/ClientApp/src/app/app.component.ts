@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { LocalData } from '../app/globals/localstorage.component';
-import { Menu } from './menu/menu'
+/*import { Menu } from './menu/menu'*/
 
 @Component({
   selector: 'app-root',
@@ -17,12 +17,12 @@ export class AppComponent {
     this.router.navigate(['/authorization']);
   }
   public redirectToMain() {
-
+    console.log("redirectToMain");
     this.router.navigate(['']);
   }
   public redirectToProfile() {
-
-    this.router.navigate(['/profile']);
+    console.log("redirectToProfile");
+/*    this.router.navigate(['/profile']);*/
   }
 
   public isAuthorized(): boolean {

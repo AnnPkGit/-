@@ -12,7 +12,7 @@ import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { AuthorizationComponent } from './authorization/authorization.component';
 import { Registration } from './registration/registration';
 import { PageComponent } from './page/page.component';
-import { Profile } from './profile/profile';
+/*import { Profile } from './profile/profile';*/
 
 @NgModule({
   declarations: [
@@ -24,7 +24,7 @@ import { Profile } from './profile/profile';
     AuthorizationComponent,
     Registration,
     PageComponent,
-    Profile
+/*    Profile*/
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -36,7 +36,7 @@ import { Profile } from './profile/profile';
       { path: 'fetch-data', component: FetchDataComponent },
       { path: 'authorization', component: AuthorizationComponent },
       { path: 'registration', component: Registration },
-      { path: 'profile', component: Profile },
+/*      { path: 'profile', component: Profile },*/
 
       { path: 'page/:id', component: PageComponent },
     ])

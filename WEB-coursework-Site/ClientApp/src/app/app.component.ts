@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { LocalData } from '../app/globals/localstorage.component';
+import { Menu } from './menu/menu'
 
 @Component({
   selector: 'app-root',
@@ -32,6 +33,6 @@ export class AppComponent {
   public unAuthorize() {
     console.log("unAuthorize");
     LocalData.unAuthorize();
-    this.router.navigate('/')
+    this.router.navigate(['']);
   }
 }

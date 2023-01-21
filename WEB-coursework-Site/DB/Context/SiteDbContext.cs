@@ -17,6 +17,8 @@ namespace WEB_coursework_Site.DB.Context
 
         public DbSet<Comment> Comments { get; set; }
 
+        public DbSet<LikeReaction> LikeReactions { get; set; }
+
         public SiteDbcontext(DbContextOptions options)
             : base(options) { }
     }

@@ -36,7 +36,9 @@
       </div>
       <hr />
       <div class="post-info-holder">
-        <span>❤️</span><span>{{post.likesCount}}</span><span>Likes</span>
+        <span *ngIf="post.isLiked" (click)="AddLike(false, post.id, 'post')">❤️</span>
+        <span *ngIf="!post.isLiked" (click)="AddLike(true, post.id, 'post')">🤍</span>
+        <span>{{post.likesCount}}</span>
       </div>
 
     </div>
@@ -56,7 +58,7 @@
 
         <div class="post-data">
           <div>
-            {{ comment.text}}
+            {{comment.text}}
           </div>
           <div *ngIf="post.images != null" class="post-image-container">
             <div class="post-img" *ngFor="let imageName of post.images">
@@ -68,7 +70,9 @@
       </div>
 
       <div class="post-info-holder">
-        <span>❤️</span><span>{{comment.likesCount}}</span>
+        <span *ngIf="comment.isLiked" (click)="AddLike(false, comment.id, 'comment')">❤️</span>
+        <span *ngIf="!comment.isLiked" (click)="AddLike(true, comment.id, 'comment')">🤍</span>
+        <span>{{comment.likesCount}}</span>
       </div>
 
     </div>

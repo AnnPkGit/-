@@ -69,6 +69,7 @@ export class HomeComponent {
       return;
 
     let newPost: PostToAddModel = { text: this.valueText, login: LocalData.GetUserLogin(), accessToken: LocalData.GetUserToken()}
+    //по етой технологии ток с юзером
     this.http?.post<string>(this.baseUrl, newPost).subscribe(result => {
       this.valueText = '';
       this.error = '';

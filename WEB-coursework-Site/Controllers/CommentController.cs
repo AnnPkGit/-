@@ -16,9 +16,9 @@ namespace WEB_coursework_Site.Controllers
         }
 
         [HttpGet]
-        public async Task<CommentWithDateModel> GetAsync(DateTimeOffset startTime, Guid postId)
+        public async Task<CommentWithDateModel> GetAsync(DateTimeOffset startTime, Guid postId, string? token)
         {
-            var result = _siteDbContextHelper.GetCommentsAsync(startTime, postId);
+            var result = _siteDbContextHelper.GetCommentsAsync(startTime, postId, token);
             try
             {
                 return await result;

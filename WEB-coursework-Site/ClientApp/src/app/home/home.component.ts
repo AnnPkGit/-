@@ -22,8 +22,10 @@ export class HomeComponent {
   constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string, private route: Router) {
     this.imagesStoragePaths = '../assets/Images/PostImages/';
     this.http = http;
-    this.baseUrl = baseUrl + 'content';
-    http.get<any>(this.baseUrl).subscribe(result => {
+    this.baseUrl = baseUrl;
+
+    var token = LocalData.isAuthorized() ? LocalData.GetUserToken() : '';
+    http.get<any>(this.baseUrl + 'content' + `?token=${token}`).subscribe(result => {
       this.posts = result["postModels"];
       this.eldestDate = result["eldestDate"];
     }, error => console.error(error));
@@ -39,7 +41,8 @@ export class HomeComponent {
       if (this.newDataRequested == false) {
         this.newDataRequested = true;
 
-        this.http?.get<any>(this.baseUrl + `?startTime=${this.eldestDate}`).subscribe(result => {
+        var token = LocalData.isAuthorized() ? LocalData.GetUserToken() : '';
+        this.http?.get<any>(this.baseUrl + 'content' + `?startTime=${this.eldestDate}` + `&token=${token}`).subscribe(result => {
           if (result["eldestDate"] != "0001-01-01T00:00:00") {
             this.posts = this.posts.concat(result["postModels"]);
             this.eldestDate = result["eldestDate"];
@@ -69,7 +72,7 @@ export class HomeComponent {
       return;
 
     let newPost: PostToAddModel = { text: this.valueText, login: LocalData.GetUserLogin(), accessToken: LocalData.GetUserToken()}
-    this.http?.post<string>(this.baseUrl, newPost).subscribe(result => {
+    this.http?.post<string>(this.baseUrl + 'content', newPost).subscribe(result => {
       this.valueText = '';
       this.error = '';
       if (result != "Ok") {
@@ -82,6 +85,29 @@ export class HomeComponent {
     console.log(id);
     var path = `/page/${id}`
     this.route?.navigate([path]);
+  }
+
+  public AddLike(like: boolean, postId: string) {
+    if (!LocalData.isAuthorized()) return;
+
+    var params = `?token=${LocalData.GetUserToken()}&postId=${postId}&like=${like}`;
+    this.http?.get<string>(this.baseUrl + "reaction/post" + params).subscribe(result => {
+      if (result == "Ok") {
+
+        var postToUpdate = this.posts.find(e => e.id == postId) || {} as PostModel;
+        if (typeof postToUpdate != undefined) {
+          if (like) {
+            postToUpdate.likesCount += 1;
+            postToUpdate.isLiked = true;
+          }
+          else {
+            postToUpdate.likesCount -= 1;
+            postToUpdate.isLiked = false;
+          }
+        }
+
+      }
+    }, error => console.error(error));
   }
 }
 

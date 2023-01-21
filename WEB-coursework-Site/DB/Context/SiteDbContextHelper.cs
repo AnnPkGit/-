@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Infrastructure.Internal;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure.Internal;
 using WEB_coursework_Site.DB.Entities;
 using WEB_coursework_Site.DB.Validators;
 using WEB_coursework_Site.Helpers.Hasher;
@@ -62,15 +63,15 @@ namespace WEB_coursework_Site.DB.Context
             return ResultCreator<string>.CreateSuccessfulResult("Ok");
         }
 
-        public async Task<PostWithDateModel> GetPostsAsync(DateTimeOffset startTime)
+        public async Task<PostWithDateModel> GetPostsAsync(DateTimeOffset startTime, string token)
         {
             //с фронта приходит дата без offset и при конвертации в DateTimeOffset добавляется локальное смещение т.е. 2 часа
             //TODO: убрать необходимость добавления 2-х часов после конвертации в Utc т.к. это работает толь =ко для часового пояса +02:00
             var dbDateFormat = startTime != DateTimeOffset.MinValue ? startTime.UtcDateTime.AddHours(2) : startTime;
-            return await Task.Run(() => GetPosts(dbDateFormat));
+            return await Task.Run(() => GetPosts(dbDateFormat, token));
         }
 
-        private PostWithDateModel GetPosts(DateTimeOffset startTime)
+        private PostWithDateModel GetPosts(DateTimeOffset startTime, string token)
         {
             var posts = new List<Post>();
             if (startTime == DateTimeOffset.MinValue)
@@ -115,6 +116,18 @@ namespace WEB_coursework_Site.DB.Context
                     AuthorAvatar = postWuser.User.Avatar
                 });
             }
+            if (!String.IsNullOrEmpty(token))
+            {
+                var correspondingToken = _siteDbcontext.Tokens.Where(t => t.AccessToken.Equals(token)).FirstOrDefault();
+                foreach (var postModel in postModels)
+                {
+                    var reaction = _siteDbcontext.LikeReactions.Where(l => l.RelatedUserId.Equals(correspondingToken.RelatedUserId)
+                        && l.RelatedPostId.Equals(postModel.Id)).FirstOrDefault();
+                    if (reaction != null && Convert.ToBoolean(reaction.IsLiked))
+                        postModel.IsLiked = true;
+                }
+            }
+
             postModels = postModels.OrderByDescending(p => p.Date).ToList();
 
             postWithDateModels.PostModels = postModels;
@@ -187,12 +200,12 @@ namespace WEB_coursework_Site.DB.Context
             return ResultCreator<string>.CreateSuccessfulResult("Ok");
         }
 
-        public async Task<Result<PostModel>> GetPostById(Guid id)
+        public async Task<Result<PostModel>> GetPostById(Guid id, string token)
         {
-            return await Task.Run(() => FindPost(id));
+            return await Task.Run(() => FindPost(id, token));
         }
 
-        private async Task<Result<PostModel>> FindPost(Guid id)
+        private async Task<Result<PostModel>> FindPost(Guid id, string token)
         {
             var post = await _siteDbcontext.Posts.FindAsync(id);
             if (post == null) 
@@ -207,6 +220,14 @@ namespace WEB_coursework_Site.DB.Context
             }
 
             var images = _siteDbcontext.PostImages.Where(i => i.RelatedPostId == post.Id).Select(i => i.Name).ToList();
+            var isLiked = false;
+            if (!String.IsNullOrEmpty(token))
+            {
+                var correspondingToken = _siteDbcontext.Tokens.Where(t => t.AccessToken.Equals(token)).FirstOrDefault();
+                var reaction = _siteDbcontext.LikeReactions.Where(l => l.RelatedUserId.Equals(correspondingToken.RelatedUserId)
+                        && l.RelatedPostId.Equals(id)).FirstOrDefault();
+                if (reaction != null) isLiked = Convert.ToBoolean(reaction.IsLiked);
+            }
 
             var postModel = new PostModel()
             {
@@ -217,21 +238,22 @@ namespace WEB_coursework_Site.DB.Context
                 Text = post.Text,
                 AuthorName = user.Login,
                 Images = images.Any() ? images : null,
-                AuthorAvatar = user.Avatar
+                AuthorAvatar = user.Avatar,
+                IsLiked = isLiked
             };
 
             return ResultCreator<PostModel>.CreateSuccessfulResult(postModel);
         }
 
-        public async Task<CommentWithDateModel> GetCommentsAsync(DateTimeOffset startTime, Guid postId)
+        public async Task<CommentWithDateModel> GetCommentsAsync(DateTimeOffset startTime, Guid postId, string token)
         {
             //с фронта приходит дата без offset и при конвертации в DateTimeOffset добавляется локальное смещение т.е. 2 часа
             //TODO: убрать необходимость добавления 2-х часов после конвертации в Utc т.к. это работает толь =ко для часового пояса +02:00
             var dbDateFormat = startTime != DateTimeOffset.MinValue ? startTime.UtcDateTime.AddHours(2) : startTime;
-            return await Task.Run(() => GetComments( startTime, postId));
+            return await Task.Run(() => GetComments( startTime, postId, token));
         }
 
-        private CommentWithDateModel GetComments(DateTimeOffset startTime, Guid postId)
+        private CommentWithDateModel GetComments(DateTimeOffset startTime, Guid postId, string token)
         {
             var comments = new List<Comment>();
             if (startTime == DateTimeOffset.MinValue)
@@ -276,12 +298,107 @@ namespace WEB_coursework_Site.DB.Context
                     AuthorAvatar = commentWuser.User.Avatar
                 });
             }
+            if (!String.IsNullOrEmpty(token))
+            {
+                var correspondingToken = _siteDbcontext.Tokens.Where(t => t.AccessToken.Equals(token)).FirstOrDefault();
+                foreach (var comment in commentModels)
+                {
+                    var reaction = _siteDbcontext.LikeReactions.Where(l => l.RelatedUserId.Equals(correspondingToken.RelatedUserId)
+                        && l.RelatedPostId.Equals(comment.Id)).FirstOrDefault();
+                    if (reaction != null && Convert.ToBoolean(reaction.IsLiked))
+                        comment.IsLiked = true;
+                }
+            }
             commentModels = commentModels.OrderByDescending(p => p.Date).ToList();
 
             commentsWithDateModel.Comments = commentModels;
             commentsWithDateModel.EldestDate = commentModels.Last().Date.DateTime;
 
             return commentsWithDateModel;
+        }
+
+        public async Task<string> AddReactionAsync(string token, Guid postId, bool like)
+        {
+            return await Task.Run(() => AddReactionToPostAsync(token, postId, like));
+        }
+
+        private async Task<string> AddReactionToPostAsync(string token, Guid postId, bool like)
+        {
+            var correspondingToken = _siteDbcontext.Tokens.Where(t => t.AccessToken.Equals(token)).FirstOrDefault();
+            if (correspondingToken == null)
+            {
+                return "Access dinied";
+            }
+            var reaction = _siteDbcontext.LikeReactions.Where(r => r.RelatedUserId.Equals(correspondingToken.RelatedUserId) 
+                && r.RelatedPostId.Equals(postId)).FirstOrDefault();
+            var post = await _siteDbcontext.Posts.FindAsync(postId);
+            if (reaction != null)
+            {
+                if((!like && Convert.ToBoolean(reaction.IsLiked)) || (like && !Convert.ToBoolean(reaction.IsLiked)))
+                {
+                    reaction.IsLiked = Convert.ToInt32(like);
+                    post.LikesCount += Convert.ToBoolean(reaction.IsLiked) ? 1 : -1;
+                }
+            }
+            else
+            {
+                reaction = new LikeReaction()
+                {
+                    Id = Guid.NewGuid(),
+                    IsLiked = Convert.ToInt32(like),
+                    RelatedPostId = postId,
+                    RelatedUserId = correspondingToken.RelatedUserId
+                };
+                _siteDbcontext.LikeReactions.Add(reaction);
+
+                if(Convert.ToBoolean(reaction.IsLiked))
+                    post.LikesCount += 1;
+            }
+            await _siteDbcontext.SaveChangesAsync();
+
+            return "Ok";
+        }
+
+        public async Task<string> AddReactionCommentAsync(string token, Guid commentId, bool like)
+        {
+            return await Task.Run(() => AddReactionToCommentAsync(token, commentId, like));
+        }
+
+        private async Task<string> AddReactionToCommentAsync(string token, Guid commentId, bool like)
+        {
+            var correspondingToken = _siteDbcontext.Tokens.Where(t => t.AccessToken.Equals(token)).FirstOrDefault();
+            if (correspondingToken == null)
+            {
+                return "Access dinied";
+            }
+            var reaction = _siteDbcontext.LikeReactions.Where(r => r.RelatedUserId.Equals(correspondingToken.RelatedUserId)
+                && r.RelatedPostId.Equals(commentId)).FirstOrDefault();
+            var comment = await _siteDbcontext.Comments.FindAsync(commentId);
+            if (reaction != null)
+            {
+                if ((!like && Convert.ToBoolean(reaction.IsLiked)) || (like && !Convert.ToBoolean(reaction.IsLiked)))
+                {
+                    reaction.IsLiked = Convert.ToInt32(like);
+                    comment.LikesCount += Convert.ToBoolean(reaction.IsLiked) ? 1 : -1;
+                }
+            }
+            else
+            {
+                reaction = new LikeReaction()
+                {
+                    Id = Guid.NewGuid(),
+                    IsLiked = Convert.ToInt32(like),
+                    RelatedPostId = commentId,
+                    RelatedUserId = correspondingToken.RelatedUserId
+                };
+                _siteDbcontext.LikeReactions.Add(reaction);
+
+                if (Convert.ToBoolean(reaction.IsLiked))
+                    comment.LikesCount += 1;
+            }
+            await _siteDbcontext.SaveChangesAsync();
+
+            return "Ok";
         }
     }
 }

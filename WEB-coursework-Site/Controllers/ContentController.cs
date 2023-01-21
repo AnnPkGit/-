@@ -17,9 +17,9 @@ namespace WEB_coursework_Site.Controllers
         }
 
         [HttpGet]
-        public async Task<PostWithDateModel> GetAsync(DateTimeOffset startTime)
+        public async Task<PostWithDateModel> GetAsync(DateTimeOffset startTime, string ?token)
         {
-            var result = _siteDbContextHelper.GetPostsAsync(startTime);
+            var result = _siteDbContextHelper.GetPostsAsync(startTime, token);
             try
             {
                 return await result;
@@ -39,9 +39,9 @@ namespace WEB_coursework_Site.Controllers
 
         [HttpGet]
         [Route("{id}")]
-        public async Task<PostModel> GetPostByIdAsync(Guid id)
+        public async Task<PostModel> GetPostByIdAsync(Guid id, string? token)
         {
-            var result = await _siteDbContextHelper.GetPostById(id);
+            var result = await _siteDbContextHelper.GetPostById(id, token);
             if (!result.IsSuccessful)
             {
                 return null;

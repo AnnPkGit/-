@@ -10,6 +10,7 @@ const PROXY_CONFIG = [
       "/user",
       "/content",
       "/comment",
+      "/reaction",
    ],
     target: target,
     secure: false,

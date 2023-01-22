@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { LocalData } from '../app/globals/localstorage.component';
-/*import { Menu } from './menu/menu'*/
 
 @Component({
   selector: 'app-root',
@@ -22,7 +21,7 @@ export class AppComponent {
   }
   public redirectToProfile() {
     console.log("redirectToProfile");
-/*    this.router.navigate(['/profile']);*/
+    //тут должен быть router на профиль
   }
 
   public isAuthorized(): boolean {

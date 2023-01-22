@@ -24,9 +24,9 @@ namespace WEB_coursework_Site.Controllers
 
         [HttpGet]
         [Route("comment")]
-        public async Task<string> AddReactionCommentAsync(string token, string commentId, bool like)
+        public async Task<string> AddReactionCommentAsync(string token, string postId, bool like)
         {
-            var result = await _siteDbContextHelper.AddReactionCommentAsync(token, Guid.Parse(commentId), like);
+            var result = await _siteDbContextHelper.AddReactionCommentAsync(token, Guid.Parse(postId), like);
             return JsonSerializer.Serialize(result);
         }
     }

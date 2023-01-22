@@ -250,7 +250,7 @@ namespace WEB_coursework_Site.DB.Context
             //с фронта приходит дата без offset и при конвертации в DateTimeOffset добавляется локальное смещение т.е. 2 часа
             //TODO: убрать необходимость добавления 2-х часов после конвертации в Utc т.к. это работает толь =ко для часового пояса +02:00
             var dbDateFormat = startTime != DateTimeOffset.MinValue ? startTime.UtcDateTime.AddHours(2) : startTime;
-            return await Task.Run(() => GetComments( startTime, postId, token));
+            return await Task.Run(() => GetComments(dbDateFormat, postId, token));
         }
 
         private CommentWithDateModel GetComments(DateTimeOffset startTime, Guid postId, string token)

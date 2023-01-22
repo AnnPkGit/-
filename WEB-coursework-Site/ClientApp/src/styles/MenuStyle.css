@@ -1,0 +1,10 @@
+.menuButton {
+  background-color: #2C96FF;
+  color: white;
+  width: 20px;
+  margin-left: 1%;
+  box-shadow: 2px 2px #C8CAD4;
+  border-radius: 20px;
+  padding: 0.3em;
+  text-decoration-line: none;
+}

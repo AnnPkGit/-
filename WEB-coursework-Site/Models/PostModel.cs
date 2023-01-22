@@ -17,5 +17,7 @@
         public string? AuthorAvatar { get; set; }
 
         public List<string>? Images { get; set; }
+
+        public bool IsLiked { get; set; }
     }
 }

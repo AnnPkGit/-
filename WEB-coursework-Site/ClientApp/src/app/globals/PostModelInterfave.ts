@@ -7,4 +7,5 @@ export interface PostModel {
   authorName: string;
   authorAvatar : string;
   images: string[];
+  isLiked: boolean;
 }

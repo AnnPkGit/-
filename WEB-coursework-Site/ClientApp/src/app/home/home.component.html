@@ -46,7 +46,10 @@
       </div>
 
       <div class="post-info-holder">
-        <span>💬</span><span>{{post.commentsCount}}</span><span>❤️</span><span>{{post.likesCount}}</span>
+        <span>💬</span><span>{{post.commentsCount}}</span>
+        <span *ngIf="post.isLiked"  (click)="AddLike(false, post.id)">❤️</span>
+        <span *ngIf="!post.isLiked" (click)="AddLike(true, post.id)">🤍</span>
+        <span>{{post.likesCount}}</span>
       </div>
 
     </div>

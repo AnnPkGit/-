@@ -1,5 +1,5 @@
 <div class="scroll-bg">
-  <div class="scroll-div">
+  <div class="scroll-div" (scroll)="onScroll($event)">
 
     <div class="page-info"><img [routerLink]="['/']" src="data:image/png;base64,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"/>
     <b>Ветка</b></div>
@@ -36,7 +36,9 @@
       </div>
       <hr />
       <div class="post-info-holder">
-        <span>❤️</span><span>{{post.likesCount}}</span><span>Likes</span>
+        <span *ngIf="post.isLiked" (click)="AddLike(false, post.id, 'post')">❤️</span>
+        <span *ngIf="!post.isLiked" (click)="AddLike(true, post.id, 'post')">🤍</span>
+        <span>{{post.likesCount}}</span>
       </div>
 
     </div>
@@ -56,7 +58,7 @@
 
         <div class="post-data">
           <div>
-            {{ comment.text}}
+            {{comment.text}}
           </div>
           <div *ngIf="post.images != null" class="post-image-container">
             <div class="post-img" *ngFor="let imageName of post.images">
@@ -68,7 +70,9 @@
       </div>
 
       <div class="post-info-holder">
-        <span>❤️</span><span>{{comment.likesCount}}</span>
+        <span *ngIf="comment.isLiked" (click)="AddLike(false, comment.id, 'comment')">❤️</span>
+        <span *ngIf="!comment.isLiked" (click)="AddLike(true, comment.id, 'comment')">🤍</span>
+        <span>{{comment.likesCount}}</span>
       </div>
 
     </div>

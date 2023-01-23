@@ -16,12 +16,12 @@ export class AppComponent {
     this.router.navigate(['/authorization']);
   }
   public redirectToMain() {
-
+    console.log("redirectToMain");
     this.router.navigate(['']);
   }
   public redirectToProfile() {
-
-    this.router.navigate(['/profile']);
+    console.log("redirectToProfile");
+    //тут должен быть router на профиль
   }
 
   public isAuthorized(): boolean {
@@ -32,6 +32,7 @@ export class AppComponent {
   public unAuthorize() {
     console.log("unAuthorize");
     LocalData.unAuthorize();
-    this.router.navigate('/')
+    this.router.navigate(['']);
+    window.location.reload();
   }
 }

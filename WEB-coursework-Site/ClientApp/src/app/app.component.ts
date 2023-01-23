@@ -21,7 +21,7 @@ export class AppComponent {
   }
   public redirectToProfile() {
     console.log("redirectToProfile");
-    //тут должен быть router на профиль
+    this.router.navigate(["/profile"]);
   }
 
   public isAuthorized(): boolean {

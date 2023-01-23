@@ -1,0 +1,59 @@
+
+.profileContainer {
+  display: table-row;
+  width: 80%;
+  height: 100%;
+  text-align: center;
+  box-shadow: -2px 2px #C8CAD4;
+  background-color: whitesmoke;
+}
+
+.profileBanner {
+  background: #4c78db;
+  border-radius: 10px;
+  margin-left: 2.5%;
+  margin-top: 2%;
+  width: 95%;
+  height: 20%;
+  background-repeat: no-repeat;
+  background-size: 100%;
+}
+
+.profileAvatar {
+  justify-content: left;
+  background: #79A2FF;
+  background-repeat: no-repeat;
+  background-size: 100%;
+  border-radius: 360px;
+  border: solid 2px black;
+  width: 150px;
+  height: 150px;
+  margin-top: 10%;
+  margin-left: -80%;
+}
+
+.named {
+  justify-content: right;
+  text-align: left;
+  margin-left: 10%;
+}
+
+  .named button {
+    border: none;
+    border-radius: 20px;
+    width: 200px;
+    margin-top: 20px;
+    color: #E2E2E2;
+    background-color: #2C96FF;
+    margin-left: -5%
+  }
+
+  .named h4 {
+    margin-right: 20%;
+  }
+
+.postHistory {
+  width: 95%;
+  margin-left: 2.5%;
+  box-shadow: -2px 2px #C8CAD4;
+}

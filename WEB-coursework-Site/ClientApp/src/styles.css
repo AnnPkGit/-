@@ -8,6 +8,8 @@
 
 @import "styles/MenuStyle.css";
 
+@import "styles/ProfileStyle.css";
+
 * {
   font-family: 'Yu Gothic UI';
 }

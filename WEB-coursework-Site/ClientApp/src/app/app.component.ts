@@ -33,5 +33,6 @@ export class AppComponent {
     console.log("unAuthorize");
     LocalData.unAuthorize();
     this.router.navigate(['']);
+    window.location.reload();
   }
 }
